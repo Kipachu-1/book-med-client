@@ -39,6 +39,7 @@ body {
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
+    --anim-gap: 14px;
   }
   .dark {
     --background: 222.2 84% 4.9%;
@@ -73,6 +74,139 @@ body {
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply text-foreground;
+    background-color: rgb(26 26 26);
   }
+}
+* {
+  overscroll-behavior: none;
+}
+
+@keyframes cube-1-move {
+  0% {
+    transform: translateX(0%) translateY(0%);
+  }
+  17% {
+    transform: translateX(calc(-100% - var(--anim-gap))) translateY(0%);
+  }
+  34% {
+    transform: translateX(calc(-100% - var(--anim-gap)))
+      translateY(calc(100% + var(--anim-gap)));
+  }
+  51% {
+    transform: translateX(calc(-100% - var(--anim-gap)))
+      translateY(calc(200% + (2 * var(--anim-gap))));
+  }
+  68% {
+    transform: translateX(0%) translateY(calc(200% + (2 * var(--anim-gap))));
+  }
+  85% {
+    transform: translateX(0%) translateY(calc(100% + var(--anim-gap)));
+  }
+  100% {
+    transform: translateX(0%) translateY(0%);
+  }
+}
+
+@keyframes cube-2-move {
+  0% {
+    transform: translateX(0%) translateY(0%);
+  }
+  17% {
+    transform: translateX(0%) translateY(calc(100% + var(--anim-gap)));
+  }
+  34% {
+    transform: translateX(calc(100% + var(--anim-gap)))
+      translateY(calc(100% + var(--anim-gap)));
+  }
+  51% {
+    transform: translateX(calc(100% + var(--anim-gap))) translateY(0);
+  }
+  68% {
+    transform: translateX(calc(100% + var(--anim-gap)))
+      translateY(calc(-100% - var(--anim-gap)));
+  }
+  85% {
+    transform: translateX(0%) translateY(calc(-100% - var(--anim-gap)));
+  }
+  100% {
+    transform: translateX(0%) translateY(0%);
+  }
+}
+
+@keyframes cube-3-move {
+  0% {
+    transform: translateX(0%) translateY(0%);
+  }
+  17% {
+    transform: translateX(0%) translateY(calc(-100% - var(--anim-gap)));
+  }
+  34% {
+    transform: translateX(calc(-100% - var(--anim-gap)))
+      translateY(calc(-100% - var(--anim-gap)));
+  }
+  51% {
+    transform: translateX(calc(-100% - var(--anim-gap))) translateY(calc(0%));
+  }
+  68% {
+    transform: translateX(calc(-100% - var(--anim-gap)))
+      translateY(calc(100% + var(--anim-gap)));
+  }
+  85% {
+    transform: translateX(calc(0%)) translateY(calc(100% + var(--anim-gap)));
+  }
+  100% {
+    transform: translateX(0%) translateY(0%);
+  }
+}
+
+@keyframes cube-4-move {
+  0% {
+    transform: translateX(0%) translateY(0%);
+  }
+  17% {
+    transform: translateX(calc(100% + var(--anim-gap))) translateY(0%);
+  }
+  34% {
+    transform: translateX(calc(100% + var(--anim-gap)))
+      translateY(calc(-100% - var(--anim-gap)));
+  }
+  51% {
+    transform: translateX(calc(100% + var(--anim-gap)))
+      translateY(calc(-200% - 2 * var(--anim-gap)));
+  }
+  68% {
+    transform: translateX(0%) translateY(calc(-200% - 2 * var(--anim-gap)));
+  }
+  85% {
+    transform: translateX(0%) translateY(calc(-100% - var(--anim-gap)));
+  }
+  100% {
+    transform: translateX(0%) translateY(0%);
+  }
+}
+
+.cube-1 {
+  animation: cube-1-move 10s infinite;
+  animation-delay: 1s;
+}
+
+.cube-2 {
+  animation: cube-2-move 10s infinite;
+  animation-delay: 1s;
+}
+
+.cube-3 {
+  animation: cube-3-move 10s infinite;
+  animation-delay: 1s;
+}
+
+.cube-4 {
+  animation: cube-4-move 10s infinite;
+  animation-delay: 1s;
+}
+
+.bg-with-pluses {
+  background: url("/assets/imgs/plus.png");
+  background-size: 15px 15px;
 }
