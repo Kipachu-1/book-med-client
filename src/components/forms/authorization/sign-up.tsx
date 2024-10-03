@@ -79,14 +79,17 @@ const SignUp: React.FC<SignUpProps> = ({ onLogin }) => {
             })}
             className=" bg-transparent h-[40px] text-md rounded border-[#c5c5c5] focus-visible:ring-0 focus-visible:border-purple-500"
           />
-          <Input
-            placeholder="Email"
-            type="email"
-            {...register("email", {
-              required: true,
-            })}
-            className="bg-transparent h-[40px] text-md rounded border-[#c5c5c5] focus-visible:ring-0 focus-visible:border-purple-500"
-          />
+          <div>
+            <Input
+              placeholder="Email"
+              type="email"
+              {...register("email", {
+                required: true,
+              })}
+              className="bg-transparent h-[40px] text-md rounded border-[#c5c5c5] focus-visible:ring-0 focus-visible:border-purple-500"
+            />
+          </div>
+
           <div>
             {errors.password && (
               <p className="text-red-500 text-[12px] top-[-16px] right-0">
