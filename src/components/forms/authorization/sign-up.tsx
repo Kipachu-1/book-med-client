@@ -3,6 +3,7 @@ import RoleSelect from "@/components/role-select";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { TRole } from "@/types";
 import { useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 interface SignUpProps {
@@ -14,8 +15,9 @@ type Inputs = {
   password: string;
   firstName: string;
   lastName: string;
-  repeatPassword: string;
-  role: string;
+  repeat_password: string;
+  role: TRole;
+  IIN: string;
 };
 
 const SignUp: React.FC<SignUpProps> = ({ onLogin }) => {
@@ -30,6 +32,7 @@ const SignUp: React.FC<SignUpProps> = ({ onLogin }) => {
     clearErrors,
     setValue,
   } = useForm<Inputs>();
+
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     if (!getValues().role) {
       setFormError("role", {
@@ -40,6 +43,7 @@ const SignUp: React.FC<SignUpProps> = ({ onLogin }) => {
     try {
       await UserAPI.register(data);
       setError(null);
+      onLogin?.();
     } catch (e) {
       setError(e as Error);
     }
@@ -63,28 +67,73 @@ const SignUp: React.FC<SignUpProps> = ({ onLogin }) => {
           )}
         </div>
         <div className="flex flex-col gap-3">
-          <Input
-            placeholder="First Name"
-            type="text"
-            {...register("firstName", {
-              required: true,
-            })}
-            className=" bg-transparent h-[40px] text-md rounded border-[#c5c5c5] focus-visible:ring-0 focus-visible:border-purple-500"
-          />
-          <Input
-            placeholder="Last Name"
-            type="text"
-            {...register("lastName", {
-              required: true,
-            })}
-            className=" bg-transparent h-[40px] text-md rounded border-[#c5c5c5] focus-visible:ring-0 focus-visible:border-purple-500"
-          />
           <div>
+            {errors.IIN && (
+              <p className="text-red-500 text-[12px] top-[-16px] right-0">
+                IIN is required
+              </p>
+            )}
+            <Input
+              placeholder="IIN"
+              type="text"
+              {...register("IIN", {
+                required: true,
+              })}
+              className=" bg-transparent h-[40px] text-md rounded border-[#c5c5c5] focus-visible:ring-0 focus-visible:border-purple-500"
+            />
+          </div>
+
+          <div>
+            {errors.firstName && (
+              <p className="text-red-500 text-[12px] top-[-16px] right-0">
+                First Name is required
+              </p>
+            )}
+            <Input
+              placeholder="First Name"
+              type="text"
+              {...register("firstName", {
+                required: true,
+              })}
+              className=" bg-transparent h-[40px] text-md rounded border-[#c5c5c5] focus-visible:ring-0 focus-visible:border-purple-500"
+            />
+          </div>
+
+          <div>
+            {errors.lastName && (
+              <p className="text-red-500 text-[12px] top-[-16px] right-0">
+                Last Name is required
+              </p>
+            )}
+            <Input
+              placeholder="Last Name"
+              type="text"
+              {...register("lastName", {
+                required: true,
+              })}
+              className=" bg-transparent h-[40px] text-md rounded border-[#c5c5c5] focus-visible:ring-0 focus-visible:border-purple-500"
+            />
+          </div>
+
+          <div>
+            {errors.email && (
+              <p className="text-red-500 text-[12px] top-[-16px] right-0">
+                {errors.email.message}
+              </p>
+            )}
             <Input
               placeholder="Email"
               type="email"
               {...register("email", {
-                required: true,
+                required: {
+                  value: true,
+                  message: "Email is required",
+                },
+                validate: (value) => {
+                  if (!value.includes("@")) {
+                    return "Email is invalid";
+                  }
+                },
               })}
               className="bg-transparent h-[40px] text-md rounded border-[#c5c5c5] focus-visible:ring-0 focus-visible:border-purple-500"
             />
@@ -111,13 +160,13 @@ const SignUp: React.FC<SignUpProps> = ({ onLogin }) => {
           </div>
 
           <div>
-            {errors.repeatPassword && (
+            {errors.repeat_password && (
               <p className="text-red-500 text-[12px] top-[-16px] right-0">
-                {errors.repeatPassword.message}
+                {errors.repeat_password.message}
               </p>
             )}
             <Input
-              {...register("repeatPassword", {
+              {...register("repeat_password", {
                 required: true,
                 validate: (value) => {
                   if (value !== passwordRef.current) {
@@ -125,7 +174,7 @@ const SignUp: React.FC<SignUpProps> = ({ onLogin }) => {
                   }
                 },
               })}
-              aria-invalid={!!errors.repeatPassword}
+              aria-invalid={!!errors.repeat_password}
               placeholder="Repeat password"
               className={cn(
                 "bg-transparent h-[40px] relative text-md rounded border-[#c5c5c5] focus-visible:ring-0 focus-visible:border-purple-500"

@@ -2,6 +2,7 @@
 import { UserAPI } from "@/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 
@@ -15,12 +16,14 @@ type Inputs = {
 };
 
 const Login: React.FC<TLoginProps> = ({ onSignUp }) => {
+  const router = useRouter();
   const [error, setError] = useState<null | Error>();
   const { register, handleSubmit } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
       await UserAPI.login(data);
       setError(null);
+      router.push("/");
     } catch (e) {
       setError(e as Error);
     }
