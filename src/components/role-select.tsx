@@ -19,11 +19,15 @@ const iconMap: { [key in TRole]: React.ReactNode } = {
 
 type RoleSelectProps = {
   onValueChange: (value: TRole) => void;
-} & React.ComponentPropsWithoutRef<typeof Select>;
+} & Omit<React.ComponentPropsWithoutRef<typeof Select>, "onValueChange">;
 
 const RoleSelect: React.FC<RoleSelectProps> = ({ onValueChange, ...props }) => {
   return (
-    <Select {...props} defaultValue="" onValueChange={onValueChange}>
+    <Select
+      {...props}
+      defaultValue=""
+      onValueChange={(v) => onValueChange?.(v as TRole)}
+    >
       <SelectTrigger className="rounded border-[#c5c5c5] capitalize outline-none focus-visible:ring-0 focus-visible:border-purple-500">
         <SelectValue placeholder="Role" />
       </SelectTrigger>
