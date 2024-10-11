@@ -17,16 +17,20 @@ type Inputs = {
 
 const Login: React.FC<TLoginProps> = ({ onSignUp }) => {
   const router = useRouter();
+  const [disabled, setDisabled] = useState(false)
   const [error, setError] = useState<null | Error>();
   const { register, handleSubmit } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
+      setDisabled(true)
       await UserAPI.login(data);
       setError(null);
       router.push("/");
     } catch (e) {
       setError(e as Error);
-    }
+    } finally {
+setDisabled(false)
+}
   };
 
   return (
@@ -61,7 +65,7 @@ const Login: React.FC<TLoginProps> = ({ onSignUp }) => {
           />
         </div>
         <div className="flex flex-col gap-2 justify-center items-center">
-          <Button className="rounded w-full">Log In</Button>
+          <Button disabled={disabled} className="rounded w-full">Log In</Button>
           <Button
             onClick={onSignUp}
             type="button"
