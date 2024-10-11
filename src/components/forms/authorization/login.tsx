@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { jwtDecode } from "jwt-decode";
 
 type TLoginProps = {
   onSignUp?: () => void;
@@ -21,7 +22,12 @@ const Login: React.FC<TLoginProps> = ({ onSignUp }) => {
   const { register, handleSubmit } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
-      await UserAPI.login(data);
+      const response = await UserAPI.login(data);
+      localStorage.setItem(
+        "cred",
+        JSON.stringify(jwtDecode(response.data.data.access_token))
+      );
+
       setError(null);
       router.push("/");
     } catch (e) {
