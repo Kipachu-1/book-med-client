@@ -22,6 +22,7 @@ type Inputs = {
 
 const SignUp: React.FC<SignUpProps> = ({ onLogin }) => {
   const [error, setError] = useState<null | Error>();
+  const [disabled, setDisabled] = useState(false)
   const {
     register,
     handleSubmit,
@@ -41,12 +42,15 @@ const SignUp: React.FC<SignUpProps> = ({ onLogin }) => {
       return;
     }
     try {
+      setDisabled(true)
       await UserAPI.register(data);
       setError(null);
       onLogin?.();
     } catch (e) {
       setError(e as Error);
-    }
+    } finally {
+setDisabled(false)
+}
   };
   const passwordRef = useRef("");
   passwordRef.current = watch("password", "");
@@ -198,7 +202,7 @@ const SignUp: React.FC<SignUpProps> = ({ onLogin }) => {
         </div>
 
         <div className="flex flex-col gap-2 justify-center items-center">
-          <Button className="rounded w-full">Sign Up</Button>
+          <Button disabled={disabled} className="rounded w-full">Sign Up</Button>
           <Button
             onClick={onLogin}
             type="button"
